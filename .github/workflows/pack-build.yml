@@ -20,11 +20,11 @@ jobs:
         with:
           args: 'build greeter --env "BP_GRADLE_BUILT_ARTIFACT=greeter/build/libs/*.[jw]ar" --builder=gcr.io/paketo-buildpacks/builder:base'
           
-          
       - name: Slack Notification on Failure
         uses: rtCamp/action-slack-notify@v2.0.2
         if: failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_TITLE: Pack Build Failure
+          SLACK_MESSAGE: Failed to build
           SLACK_COLOR: danger
