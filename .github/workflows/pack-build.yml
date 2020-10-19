@@ -14,6 +14,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Run a one-line script
+        run: pwd && env
 
       - name: Pack Build
         uses: dfreilich/pack-action@v1.1
