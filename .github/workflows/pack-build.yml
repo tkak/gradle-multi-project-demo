@@ -16,11 +16,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run a one-line script
         run: pwd && env
-
-      - name: Pack Build
-        uses: dfreilich/pack-action@v1.1
+        
+      - name: Build image
+        uses: mamezou-tech/buildpacks-action@master
         with:
-          args: 'build greeter --env "BP_GRADLE_BUILT_ARTIFACT=greeter/build/libs/*.[jw]ar" --builder=gcr.io/paketo-buildpacks/builder:base'
+          image: 'greeter'
+          builder: 'gcr.io/paketo-buildpacks/builder:base'
+          env: 'BP_GRADLE_BUILT_ARTIFACT=greeter/build/libs/*.[jw]ar'
           
       - name: Slack Notification on Failure
         uses: rtCamp/action-slack-notify@v2.0.2
