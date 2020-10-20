@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run a one-line script
+        run: pwd && env
+        
+      - name: Build image
+        uses: mamezou-tech/buildpacks-action@master
+        with:
+          image: 'greeter'
+          path: '.'
+          builder: 'gcr.io/paketo-buildpacks/builder:base'
+          env: 'BP_GRADLE_BUILT_ARTIFACT=greeter/build/libs/*.[jw]ar'
+          
+      - name: Slack Notification on Failure
+        uses: rtCamp/action-slack-notify@v2.0.2
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: danger
