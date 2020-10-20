@@ -21,6 +21,7 @@ jobs:
         uses: mamezou-tech/buildpacks-action@master
         with:
           image: 'greeter'
+          path: '.'
           builder: 'gcr.io/paketo-buildpacks/builder:base'
           env: 'BP_GRADLE_BUILT_ARTIFACT=greeter/build/libs/*.[jw]ar'
           
@@ -29,6 +30,4 @@ jobs:
         if: failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_TITLE: Pack Build Failure
-          SLACK_MESSAGE: Failed to build
           SLACK_COLOR: danger
