@@ -21,7 +21,6 @@ jobs:
         uses: mamezou-tech/buildpacks-action@master
         with:
           image: 'greeter'
-          path: '.'
           builder: 'gcr.io/paketo-buildpacks/builder:base'
           env: 'BP_GRADLE_BUILT_ARTIFACT=greeter/build/libs/*.[jw]ar'
           
