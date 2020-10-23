@@ -18,7 +18,8 @@ jobs:
       - name: Build image
         uses: mamezou-tech/buildpacks-action@master
         with:
-          image: 'greeter:${{ github.sha }}'
+          image: 'greeter'
+          tag: '${{ github.sha }}'
           path: '.'
           builder: 'gcr.io/paketo-buildpacks/builder:base'
           env: 'BP_GRADLE_BUILT_ARTIFACT=greeter/build/libs/*.[jw]ar'
