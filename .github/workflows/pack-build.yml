@@ -1,4 +1,4 @@
-name: CI
+name: build
 
 on:
   schedule:
@@ -14,17 +14,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Run a one-line script
-        run: pwd && env
         
       - name: Build image
         uses: mamezou-tech/buildpacks-action@master
         with:
-          image: 'greeter'
+          image: 'greeter:${{ github.sha }}'
           path: '.'
           builder: 'gcr.io/paketo-buildpacks/builder:base'
           env: 'BP_GRADLE_BUILT_ARTIFACT=greeter/build/libs/*.[jw]ar'
-          
+        
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'greeter:${{ github.sha }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+
       - name: Slack Notification on Failure
         uses: rtCamp/action-slack-notify@v2.0.2
         if: failure()
